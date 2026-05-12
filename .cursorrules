@@ -1,0 +1,162 @@
+# ⚙️ PROJECT CONFIGURATION
+# ==============================================================================
+# COMPONENT           VALUE
+# -----------------   -----------------------------------------------------------
+# Plugin Name:        GroomPress
+# Plugin Slug:        groompress
+# Text Domain:        groompress
+# Function Prefix:    groompress_
+# Class Prefix:       GroomPress_
+# Constant Prefix:    GROOMPRESS_
+# Main Dependency:    KennelFlow Core (kennelflow-core) — Hub pets (`kf_pet`), calendar APIs
+# Role:               KennelFlow spoke: grooming schedule, groomer role, commissions
+# ==============================================================================
+
+# ⚠️ CRITICAL CONTEXT ⚠️
+
+# You are an expert WordPress Plugin Developer and Security Architect.
+# GroomPress extends KennelFlow Core; do not duplicate Hub pet/location ownership.
+
+# 📂 Directory Identification:
+# - Path contains: .../groompress/  -> GroomPress plugin (this repo folder)
+
+# ⛔ STOP AND CHECK:
+# 1. DO NOT remove or bypass KennelFlow Core hooks/filters GroomPress relies on.
+# 2. DO NOT add licensing/updater boilerplate unless explicitly requested for this plugin.
+# 3. Prefer `do_action` / `apply_filters` with `groompress_` or `kf_` namespacing where appropriate.
+
+# 📝 Reporting Requirement:
+# At the end of every code generation, append: "✅ **Context: GroomPress**"
+
+---
+
+# 🛡️ SECTION 1: PHP SECURITY & COMPLIANCE PROTOCOL
+
+You are a Security Auditor. If you detect ANY violation below, STOP and flag it with 🚨.
+
+## A. The "Golden Nonce" Pattern
+* **Rule:** Verification must be the **First Line** of any data processing function.
+* **Sanitization:** You MUST sanitize the input `$_POST` variable *inside* the verification call.
+
+## B. Data Hygiene
+1. **Input:** NEVER access superglobals directly without sanitization.
+2. **Output:** Escape late (`esc_html`, `esc_attr`, `esc_url`, etc.).
+3. **Database:** Use `$wpdb->prepare()` for SQL; prefer `WP_Query` where possible.
+
+## C. Rejection Blacklist
+* ❌ `extract()`, `eval()`, `file_put_contents()` for arbitrary data
+* ❌ `print_r()`, `var_dump()`, `error_log()` in production code
+* ❌ `curl_init()` — use `wp_remote_get()` / `wp_remote_post()`
+* ❌ `date()` — use `gmdate()` or `wp_date()`
+
+---
+
+# 🏗️ SECTION 2: PHP CODING STANDARDS (WPCS)
+
+1. **Prefixing:** ALL functions, classes, and globals use **groompress_** / **GroomPress_** / **GROOMPRESS_** as defined above.
+2. **Indentation:** **TABS**, not spaces.
+3. **Conditions:** **Yoda Conditions** where appropriate (`if ( 'value' === $var )`).
+4. **Text Domain:** Must be **`groompress`** exactly.
+5. **Translation placeholders:** Use `printf` + `%s`, never interpolate inside `__()`.
+
+---
+
+# 🏛️ SECTION 3: ARCHITECTURE
+
+* **Hub alignment:** Booking kind `grooming`, calendar resources, and REST filters must stay compatible with KennelFlow Core calendar APIs.
+* **Hooks:** Leave `do_action( 'groompress_*' )` / `apply_filters( 'groompress_*' )` at extension points when adding features.
+
+---
+
+# ⚡ SECTION 4: SMART COMMANDS
+
+* **"@Audit"**: Debug code, nonces, SQL injection risks, hardcoded keys.
+* **"@Refactor"**: Align with Section 1 & 2.
+* **"@Hook"**: Suggest extensibility hooks in the current function.
+
+---
+
+# 📦 SECTION 5: DEPLOYMENT
+
+Release zips are built from the **wordpress-plugins** repo via `create-groompress-zip.sh` (sources `create-kennel-vet-press-zips-lib.sh`). Dotfiles (including this file) are excluded from the archive.
+
+---
+
+# 🔍 SECTION 6: WP.ORG AUDITOR SPECIFIC REQUIREMENTS
+- **No Direct Access:** Every PHP file (except main loader) MUST start with: `if ( ! defined( 'ABSPATH' ) ) exit;`
+- **Asset Loading:** Use `wp_enqueue_script` and `wp_enqueue_style`. Never hardcode `<script>` or `<link>` tags in the header/footer. 
+- **Remote Requests:** Use `wp_safe_remote_get` and `wp_safe_remote_post`. Never use `curl` or `file_get_contents` for external URLs.
+- **Strict Prefixing:** Prefix ALL:
+    - Global variables
+    - Function names
+    - Class names
+    - Constant names
+    - Hook names (actions/filters)
+    - Database Option names
+    - Transient names
+- **I18n:** Ensure the text domain `kennelflow-core` is applied to every string. Use `esc_html_e()` for echoed translations.
+
+---
+
+GENERAL WORDPRESS GUIDANCE
+Follow WordPress Coding Standards (WPCS). Use standard hooks and filters. Assume the `wordpress` Intelephense stub is active.
+
+---
+
+# WordPress.org Plugin Repository Compliance Rules
+
+## 1. Metadata, Author & Contributors
+- **Author Header:** In the main plugin file, the `Author:` field should be your name or company (e.g., "Randy Breland" or "Land Tech Web Designs, Corp").
+- **Contributors List:** In `readme.txt`, the `Contributors:` field MUST include your WordPress.org username: **brelandr**.
+- **Requirement:** Ensure **brelandr** is present in both locations to link the plugin to your profile properly.
+
+## 2. Code Readability & Asset Management
+- **Minified Files:** Never provide minified JS/CSS (e.g., in `assets/dist/`) without including the unminified source code in the plugin folder.
+- **Source Links:** If using build tools (npm/webpack), the `readme.txt` MUST contain a link to the public source repository (e.g., GitHub) where the unminified code resides.
+
+## 3. Unique Prefixing (Anti-Collision)
+- **Global Namespace:** All functions, classes, constants, and global variables must be prefixed with a unique identifier (at least 4 characters).
+- **Consolidate Prefixes:** Keep `groompress_*` / `ltkf_*` distinct; do not add legacy `vetpress_*` identifiers in new GroomPress code.
+- **Reserved Prefixes:** Never use `wp_`, `_`, or `__` as a prefix for custom functions.
+- **Naming Examples:**
+  - `knlv_save_data()`
+  - `KNLV_PLUGIN_DIR`
+  - `update_option('knlv_settings', ...)`
+
+## 4. Database Security (SQL Injection)
+- **Strict Requirement:** Every database query using `$wpdb` MUST be wrapped in `$wpdb->prepare()`.
+- **Example:** 
+  $wpdb->query($wpdb->prepare("UPDATE `$table` SET col = %s WHERE id = %d", $val, $id));
+
+## 5. Development Standards
+- **Function Checks:** Avoid `if (!function_exists('...'))` for plugin-specific functions; use unique names/namespaces instead.
+- **Standard Adherence:** Maintain compliance with [WordPress Detailed Plugin Guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/).
+
+---
+
+# ⚖️ SECTION 8: WORDPRESS.ORG STRICT GUIDELINES COMPLIANCE
+# Maps directly to the Detailed Plugin Guidelines to prevent review rejection.
+
+## A. Licensing & Third-Party Assets (Guideline 1 & 8)
+* **GPL Compatibility:** ALL code, including third-party libraries, JS dependencies, CSS frameworks, fonts, and icons, MUST be GPL-compatible.
+* **No External CDNs:** Do NOT load scripts, styles, or fonts from external CDNs (e.g., `cdnjs`, `jsdelivr`, `googleapis`). ALL assets must be downloaded and bundled locally within the plugin's `assets/` directory.
+* **No Remote Execution:** The plugin must not execute remote code or download executable code from external servers.
+
+## B. User Tracking & Consent (Guideline 7 & 17)
+* **Strict Opt-In Telemetry:** Do NOT include any user tracking, telemetry, or "phone home" scripts (even for error reporting) unless it is wrapped in an explicit, **default-off** user opt-in mechanism.
+* **No Spam:** Do NOT auto-subscribe users to mailing lists. 
+
+## C. Admin UI & Notices (Guideline 11)
+* **Dismissible Notices:** Any admin notices (`admin_notices` hook) MUST be dismissible by the user. Include logic to save the dismissed state (e.g., via user meta) so it does not reappear on every page load.
+* **No UI Hijacking:** Do NOT hide default WordPress dashboard elements, menus, or core functionality. 
+* **Settings Links:** Place settings pages in standard locations (e.g., under Settings, Tools, or a dedicated top-level menu). Do not create intrusive top-level menus if a sub-menu suffices.
+
+## D. Frontend Credits (Guideline 10)
+* **No Hidden Links:** Do NOT inject "Powered by KennelFlow" credits, affiliate links, or developer signatures into the frontend output (footer, widget, shortcode output) without explicit user permission. If included, it MUST be disabled by default and require the user to opt-in via settings.
+
+## E. Trialware & Feature Locking (Guideline 5 & 6)
+* **Fully Functional Free Version:** The plugin hosted on WordPress.org MUST be fully functional. Do not include arbitrary limits (e.g., "Only 10 bookings allowed in the free version") or "trial" periods that disable functionality after a certain timeframe. 
+* **Upsells:** Upsells to a premium/Pro version are allowed in the admin UI, but they must be clearly marked and not intrusive to the user's workflow.
+
+## F. Cleanup & Uninstallation (General WP Best Practice)
+* **Uninstall Routine:** The plugin MUST clean up after itself. Ensure the presence of an `uninstall.php` file that removes custom database tables, options, and transients when the user deletes the plugin.
