@@ -30,6 +30,14 @@ GroomPress does **not** register a public shortcode. Customer-facing pages use *
 
 Data stays on your site except for optional SMS delivery through your own Twilio account when enabled.
 
+== Try It Live - Preview This Plugin Instantly ==
+
+Preview GroomPress in WordPress Playground: the blueprint installs **KennelFlow Core** and **KennelFlow Groom** from WordPress.org, seeds demo pets and the owner portal, and opens the **Grooming Schedule** calendar in wp-admin. Log in as **admin** / **password** (demo owner: **demoowner** / **password**).
+
+[Preview on WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/brelandr/kennelflow-groom/main/blueprint.json)
+
+The blueprint ships as `blueprint.json` and `assets/blueprints/blueprint.json`. WordPress.org also serves a copy from plugin SVN for directory live preview.
+
 == Installation ==
 
 1. Install and activate **KennelFlow Core** (required).
