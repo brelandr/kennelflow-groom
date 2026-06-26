@@ -25,7 +25,7 @@ class KennelFlow_Groom_Admin_Calendar {
 	 * @return void
 	 */
 	public static function init() {
-		add_action( 'admin_menu', array( __CLASS__, 'register_menu' ) );
+		add_action( 'admin_menu', array( __CLASS__, 'register_menu' ), 15 );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'maybe_enqueue_scripts' ) );
 	}
 
@@ -48,15 +48,28 @@ class KennelFlow_Groom_Admin_Calendar {
 			return;
 		}
 
-		$parent = function_exists( 'ltkf_get_hub_menu_slug' ) ? ltkf_get_hub_menu_slug() : 'edit.php?post_type=' . ltkf_get_pet_post_type();
-		add_submenu_page(
-			$parent,
-			__( 'Grooming Schedule', 'kennelflow-groom' ),
-			__( 'Grooming Schedule', 'kennelflow-groom' ),
-			self::required_cap(),
-			self::PAGE_SLUG,
-			array( __CLASS__, 'render_page' )
-		);
+		$parents = array();
+		if ( function_exists( 'groompress_get_salon_menu_slug' ) ) {
+			$parents[] = groompress_get_salon_menu_slug();
+		}
+		if ( function_exists( 'ltkf_get_hub_menu_slug' ) ) {
+			$parents[] = ltkf_get_hub_menu_slug();
+		}
+		if ( empty( $parents ) ) {
+			$parents[] = 'edit.php?post_type=' . ltkf_get_pet_post_type();
+		}
+		$parents = array_unique( array_map( 'strval', $parents ) );
+
+		foreach ( $parents as $parent ) {
+			add_submenu_page(
+				$parent,
+				__( 'Grooming Schedule', 'kennelflow-groom' ),
+				__( 'Grooming Schedule', 'kennelflow-groom' ),
+				self::required_cap(),
+				self::PAGE_SLUG,
+				array( __CLASS__, 'render_page' )
+			);
+		}
 	}
 
 	/**
@@ -122,7 +135,7 @@ class KennelFlow_Groom_Admin_Calendar {
 					'admin_notices',
 					static function () use ( $page_slug ) {
 						// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-						if ( ! isset( $_GET['page'] ) || $page_slug !== sanitize_key( wp_unslash( $_GET['page'] ) ) ) {
+						if ( ! isset( $_GET['page'] ) || sanitize_key( wp_unslash( $_GET['page'] ) ) !== $page_slug ) {
 							return;
 						}
 						if ( ! current_user_can( 'manage_options' ) ) {

@@ -174,10 +174,11 @@ class KennelFlow_Groom_Commissions {
 			return null;
 		}
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Single-row lookup; table from KennelFlow helper.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Single-row lookup; table from KennelFlow helper.
 		$row = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT id, post_id, booking_kind, kennel_id FROM `{$table}` WHERE post_id = %d LIMIT 1",
+				'SELECT id, post_id, booking_kind, kennel_id FROM %i WHERE post_id = %d LIMIT 1',
+				$table,
 				$booking_post_id
 			)
 		);
@@ -294,10 +295,11 @@ class KennelFlow_Groom_Commissions {
 
 		$table = KennelFlow_Groom_Install::commissions_table_name();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Idempotency check; table from helper.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Idempotency check; table from helper.
 		$exists = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT id FROM `{$table}` WHERE order_id = %d AND booking_id = %d LIMIT 1",
+				'SELECT id FROM %i WHERE order_id = %d AND booking_id = %d LIMIT 1',
+				$table,
 				$order_id,
 				$booking_row_id
 			)

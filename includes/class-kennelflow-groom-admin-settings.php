@@ -22,7 +22,7 @@ class KennelFlow_Groom_Admin_Settings {
 	 * @return void
 	 */
 	public static function init() {
-		add_action( 'admin_menu', array( __CLASS__, 'register_menu' ) );
+		add_action( 'admin_menu', array( __CLASS__, 'register_menu' ), 15 );
 		add_action( 'admin_init', array( __CLASS__, 'register_settings' ) );
 	}
 
@@ -45,15 +45,28 @@ class KennelFlow_Groom_Admin_Settings {
 			return;
 		}
 
-		$parent = function_exists( 'ltkf_get_hub_menu_slug' ) ? ltkf_get_hub_menu_slug() : 'edit.php?post_type=' . ltkf_get_pet_post_type();
-		add_submenu_page(
-			$parent,
-			__( 'GroomPress Settings', 'kennelflow-groom' ),
-			__( 'GroomPress Settings', 'kennelflow-groom' ),
-			self::required_cap(),
-			self::PAGE_SLUG,
-			array( __CLASS__, 'render_page' )
-		);
+		$parents = array();
+		if ( function_exists( 'groompress_get_salon_menu_slug' ) ) {
+			$parents[] = groompress_get_salon_menu_slug();
+		}
+		if ( function_exists( 'ltkf_get_hub_menu_slug' ) ) {
+			$parents[] = ltkf_get_hub_menu_slug();
+		}
+		if ( empty( $parents ) ) {
+			$parents[] = 'edit.php?post_type=' . ltkf_get_pet_post_type();
+		}
+		$parents = array_unique( array_map( 'strval', $parents ) );
+
+		foreach ( $parents as $parent ) {
+			add_submenu_page(
+				$parent,
+				__( 'GroomPress Settings', 'kennelflow-groom' ),
+				__( 'GroomPress Settings', 'kennelflow-groom' ),
+				self::required_cap(),
+				self::PAGE_SLUG,
+				array( __CLASS__, 'render_page' )
+			);
+		}
 	}
 
 	/**
