@@ -11,8 +11,6 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 GroomPress for KennelFlow: grooming calendar, groomer pay, commissions, and salon settings. Requires KennelFlow Core.
 
-**Developer:** Randy Breland ([brelandr](https://profiles.wordpress.org/brelandr/)), [Land Tech Web Designs](https://landtechwebdesigns.com). Contact: sales@landtechwebdesigns.com
-
 == Description ==
 
 **GroomPress** (KennelFlow Groom) is the grooming companion for the KennelFlow stack. It adds a **GroomPress** admin menu with a weekly grooming calendar, groomer earnings and commissions, and salon-wide settings — all built on shared **KennelFlow Core** pet records.
@@ -78,6 +76,10 @@ Core grooming features run entirely on your site. Optional completion SMS uses *
 6. KennelFlow Dashboard — owner portal tabs for boarding, vaccinations, medications, and waivers (`[ltkf_dashboard]`).
 7. Today (Pro) — daily grooming list with recipe snippets (KennelFlow Groom Pro add-on).
 8. Pet grooming profile — coat notes and digital recipe card (KennelFlow Groom Pro add-on).
+
+== Credits ==
+
+**Developer:** Randy Breland ([brelandr](https://profiles.wordpress.org/brelandr/)), [Land Tech Web Designs](https://landtechwebdesigns.com). Contact: sales@landtechwebdesigns.com
 
 == Changelog ==
 
