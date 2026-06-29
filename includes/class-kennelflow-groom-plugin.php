@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 require_once KENNELFLOW_GROOM_PLUGIN_DIR . 'includes/class-kennelflow-groom-activator.php';
 require_once KENNELFLOW_GROOM_PLUGIN_DIR . 'includes/class-kennelflow-groom-install.php';
 require_once KENNELFLOW_GROOM_PLUGIN_DIR . 'includes/class-kennelflow-groom-admin-calendar.php';
+require_once KENNELFLOW_GROOM_PLUGIN_DIR . 'includes/class-kennelflow-groom-calendar-access.php';
 require_once KENNELFLOW_GROOM_PLUGIN_DIR . 'includes/class-kennelflow-groom-vet-access.php';
 require_once KENNELFLOW_GROOM_PLUGIN_DIR . 'includes/class-kennelflow-groom-admin-settings.php';
 require_once KENNELFLOW_GROOM_PLUGIN_DIR . 'includes/class-kennelflow-groom-admin-earnings.php';
@@ -49,6 +50,8 @@ class KennelFlow_Groom_Plugin {
 	public function init() {
 		KennelFlow_Groom_Install::maybe_upgrade();
 		KennelFlow_Groom_Activator::ensure_role();
+		KennelFlow_Groom_Calendar_Access::init();
+		KennelFlow_Groom_Calendar_Access::register_caps();
 		KennelFlow_Groom_Admin_Salon::init();
 		KennelFlow_Groom_Admin_Calendar::init();
 		KennelFlow_Groom_Admin_Settings::init();

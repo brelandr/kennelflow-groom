@@ -142,12 +142,17 @@ class KennelFlow_Groom_Admin_Calendar {
 							return;
 						}
 						printf(
-							'<div class="notice notice-error"><p>%s</p></div>',
+							'<div class="notice notice-error is-dismissible"><p>%s</p></div>',
 							esc_html__( 'Grooming Schedule uses the KennelFlow Hub calendar bundle. The compiled files are missing. From the kennelflow-core plugin folder, run: npm install && npm run build (then upload the build/ folder: index.js, index.css, index.asset.php).', 'kennelflow-groom' )
 						);
 					}
 				);
 			}
+			return;
+		}
+
+		if ( function_exists( 'ltkf_enqueue_hub_calendar_bundle' ) ) {
+			ltkf_enqueue_hub_calendar_bundle( self::SCRIPT_HANDLE );
 			return;
 		}
 
@@ -215,7 +220,11 @@ class KennelFlow_Groom_Admin_Calendar {
 	 * @return void
 	 */
 	public static function render_page() {
-		if ( ! current_user_can( self::required_cap() ) ) {
+		if ( function_exists( 'ltkf_user_can_view_hub_calendar' ) ) {
+			if ( ! ltkf_user_can_view_hub_calendar() ) {
+				wp_die( esc_html__( 'You do not have permission to view this page.', 'kennelflow-groom' ) );
+			}
+		} elseif ( ! current_user_can( self::required_cap() ) ) {
 			wp_die( esc_html__( 'You do not have permission to view this page.', 'kennelflow-groom' ) );
 		}
 

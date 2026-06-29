@@ -4,3 +4,4 @@
  *
  * @package KennelFlow_Groom
  */
+defined( 'ABSPATH' ) || exit;

@@ -20,15 +20,16 @@ class KennelFlow_Groom_Activator {
 	const CAP_VIEW_COMMISSIONS = 'groompress_view_commissions';
 
 	/**
+	 * View KennelFlow Hub / grooming calendar (front-end staff calendar and REST reads).
+	 */
+	const CAP_VIEW_CALENDAR = 'groompress_view_calendar';
+
+	/**
 	 * Plugin activation.
 	 *
 	 * @return void
 	 */
 	public static function activate() {
-		if ( function_exists( 'groompress_load_textdomain' ) ) {
-			groompress_load_textdomain();
-		}
-
 		self::ensure_role();
 		require_once KENNELFLOW_GROOM_PLUGIN_DIR . 'includes/class-kennelflow-groom-install.php';
 		KennelFlow_Groom_Install::install();
@@ -53,8 +54,15 @@ class KennelFlow_Groom_Activator {
 		$caps = array(
 			'read'                     => true,
 			'edit_posts'               => true,
+			'read_private_posts'       => true,
 			self::CAP_VIEW_COMMISSIONS => true,
+			self::CAP_VIEW_CALENDAR    => true,
 		);
+
+		if ( class_exists( 'KennelFlow_Groom_Calendar_Access' ) ) {
+			$caps[ KennelFlow_Groom_Calendar_Access::CAP_CREATE_BOOKINGS ] = true;
+			$caps[ KennelFlow_Groom_Calendar_Access::CAP_EDIT_HUB_PETS ]   = true;
+		}
 
 		$role = get_role( self::ROLE );
 		if ( $role ) {
@@ -68,6 +76,14 @@ class KennelFlow_Groom_Activator {
 		$admin = get_role( 'administrator' );
 		if ( $admin ) {
 			$admin->add_cap( self::CAP_VIEW_COMMISSIONS );
+			$admin->add_cap( self::CAP_VIEW_CALENDAR );
+			if ( class_exists( 'KennelFlow_Groom_Calendar_Access' ) ) {
+				$admin->add_cap( KennelFlow_Groom_Calendar_Access::CAP_EDIT_HUB_PETS );
+			}
+		}
+
+		if ( class_exists( 'KennelFlow_Groom_Calendar_Access' ) ) {
+			KennelFlow_Groom_Calendar_Access::register_caps();
 		}
 	}
 }

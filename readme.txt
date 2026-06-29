@@ -2,9 +2,9 @@
 Contributors: brelandr
 Tags: pets, grooming, kennel, salon, calendar
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.2.1
+Stable tag: 0.2.6
 Text Domain: kennelflow-groom
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,24 @@ Core grooming features run entirely on your site. Optional completion SMS uses *
 **Developer:** Randy Breland ([brelandr](https://profiles.wordpress.org/brelandr/)), [Land Tech Web Designs](https://landtechwebdesigns.com). Contact: sales@landtechwebdesigns.com
 
 == Changelog ==
+
+= 0.2.6 =
+* Groom Pro session photos: pass calendar settings for all calendar viewers (not only users who can create bookings); grant groomers `upload_files` when Groom Pro is active.
+
+= 0.2.5 =
+* Fix Staff Calendar access for vet and boarding staff: Hub calendar capability applies to groomers only (was forcing `groompress_view_calendar` on every role).
+
+= 0.2.4 =
+* Groomers: `groompress_create_bookings` for Add booking on the staff calendar (maps KennelFlow Boarding booking caps + Hub location/pet REST reads).
+* Groomer calendar sessions default the Add booking modal to **Grooming**.
+
+= 0.2.3 =
+* Groomers: `groompress_edit_hub_pets` for Hub Pets list/edit; Hub dashboard trimmed to grooming links; vet Rooms/Locations hidden from groomers.
+* Demo persona switch refreshes groomer role caps; fixes Staff Calendar permission when Boarding plugin is active.
+
+= 0.2.2 =
+* Groomers: `groompress_view_calendar` capability for the front-end Staff Calendar (`[ltkf_hub_calendar]`) and calendar REST reads.
+* Groomer sessions on the staff calendar page default to the **grooming** schedule (groomer rows).
 
 = 0.2.1 =
 * Release grooming calendar, groomer earnings, commissions, salon settings, groomer role, and optional completion SMS.

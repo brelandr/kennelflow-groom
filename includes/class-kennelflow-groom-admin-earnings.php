@@ -234,7 +234,7 @@ class KennelFlow_Groom_Admin_Earnings {
 			</form>
 
 			<?php if ( ! KennelFlow_Groom_Install::commissions_table_exists() ) : ?>
-				<div class="notice notice-warning"><p><?php esc_html_e( 'The commissions table is not installed yet. Reactivate GroomPress or check the database.', 'kennelflow-groom' ); ?></p></div>
+				<div class="notice notice-warning inline"><p><?php esc_html_e( 'The commissions table is not installed yet. Reactivate GroomPress or check the database.', 'kennelflow-groom' ); ?></p></div>
 			<?php else : ?>
 				<table class="widefat striped">
 					<thead>
